@@ -17,7 +17,7 @@ allprojects {
 subprojects {
     apply plugin: 'java-library'
     java {
-        toolchain { languageVersion = JavaLanguageVersion.of(21) }
+        toolchain { languageVersion = JavaLanguageVersion.of(8) }
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
         withSourcesJar()
@@ -36,7 +36,6 @@ subprojects {
     }
     tasks.withType(Test).configureEach {
         useJUnit()
-        jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
     }
 }
 

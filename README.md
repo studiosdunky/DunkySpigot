@@ -4,7 +4,7 @@ Servidor Minecraft 1.8.8 mantido pela StudiosDunky, baseado no WindSpigot.
 
 ## Compilação
 
-Requer JDK 21. Configure `JAVA_HOME` para esse JDK.
+Requer JDK 21 para executar o build Gradle e JDK 8 para compilar e testar o servidor. Configure `JAVA_HOME` para o JDK 21 e `JAVA8_HOME` para o JDK 8.
 
 ```powershell
 ./gradlew.bat clean build
@@ -12,7 +12,7 @@ Requer JDK 21. Configure `JAVA_HOME` para esse JDK.
 
 Artefatos: `DunkySpigot-Server/build/libs/DunkySpigot.jar` e `DunkySpigot-API/build/libs/DunkySpigot-API.jar`.
 
-O build também copia o JAR validado para `servers/lobby`, `servers/bridge` e `servers/bedwars` na estrutura local da rede. O runtime mantém o requisito de Java 11 ou superior da base.
+O build também copia o JAR validado para `servers/lobby`, `servers/bridge` e `servers/bedwars` na estrutura local da rede. O servidor roda em Java 8.
 
 ```text
 java -Duser.timezone=America/Sao_Paulo -Xms512M -Xmx2G -jar DunkySpigot.jar nogui

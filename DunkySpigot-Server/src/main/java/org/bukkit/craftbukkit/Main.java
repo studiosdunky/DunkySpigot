@@ -23,9 +23,9 @@ public class Main {
 	public static void main(String[] args) {
 		System.setProperty("log4j2.formatMsgNoLookups", "true");
 		try {
-			if (!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_17)) {
-				System.err.println("It seems like you are not using Java 17!");
-				System.out.println("The use of Java 17 is strongly recommended.");
+			if (!SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_8)) {
+				System.err.println("DunkySpigot requires Java 8 or newer.");
+				System.out.println("Install Java 8 or newer to start DunkySpigot.");
 			}
 		} catch (Exception ignored) {
 			System.err.println("Failed to get Java version! Continuing either way..");
