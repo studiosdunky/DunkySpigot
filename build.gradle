@@ -46,3 +46,25 @@ tasks.named('assemble') {
 tasks.named('check') {
     dependsOn ':DunkySpigot-API:check', ':DunkySpigot-Server:check'
 }
+
+// The local network uses one runtime JAR per game server.
+def localServers = file('../../../servers')
+def gameServers = ['lobby', 'bridge', 'bedwars']
+def runtimeJar = project(':DunkySpigot-Server').layout.buildDirectory.file('libs/DunkySpigot.jar')
+tasks.register('copyToServers') {
+    dependsOn ':DunkySpigot-Server:remapJar', tasks.named('check')
+    inputs.file(runtimeJar)
+    outputs.files(gameServers.collect { new File(localServers, "${it}/DunkySpigot.jar") })
+    onlyIf { localServers.isDirectory() }
+    doLast {
+        gameServers.each { server ->
+            def destination = new File(localServers, server)
+            if (!destination.isDirectory()) throw new GradleException("Local server directory missing: ${destination}")
+            copy {
+                from runtimeJar
+                into destination
+            }
+        }
+    }
+}
+tasks.named('build') { dependsOn 'copyToServers' }
