@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" packages="com.mojang.util">
     <Appenders>
-        <Console name="WINDOWS_COMPAT" target="SYSTEM_OUT"/>
+        <Console name="WINDOWS_COMPAT" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss} %level]: %msg%n" />
+        </Console>
         <Queue name="TerminalConsole">
             <PatternLayout pattern="[%d{HH:mm:ss} %level]: %msg%n" />
         </Queue>

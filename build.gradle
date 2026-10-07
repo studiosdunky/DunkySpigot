@@ -40,6 +40,13 @@ subprojects {
     }
 }
 
+ext.dunkySourceDirectories = [file('DunkySpigot-API/src/main'), file('DunkySpigot-Server/src/main')]
+ext.dunkyTrackedFiles = [file('build.gradle'), file('settings.gradle'), file('DunkySpigot-API/build.gradle'), file('DunkySpigot-Server/build.gradle')]
+ext.dunkyArtifactTask = 'build'
+ext.dunkyArtifactFile = file('DunkySpigot-Server/build/libs/DunkySpigot.jar')
+apply from: '../DunkyUpdater/versionamento.gradle'
+subprojects { version = rootProject.version }
+
 tasks.named('assemble') {
     dependsOn ':DunkySpigot-API:assemble', ':DunkySpigot-Server:assemble'
 }

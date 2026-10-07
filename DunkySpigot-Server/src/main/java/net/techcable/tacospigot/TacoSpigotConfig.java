@@ -18,10 +18,10 @@ import com.windpvp.windspigot.WindSpigot;
 public class TacoSpigotConfig {
 
 	private static File CONFIG_FILE;
-	private static final String HEADER = "This is the main configuration file for TacoSpigot.\n"
+	private static final String HEADER = "This is the main configuration file for DunkySpigot.\n"
 			+ "As you can see, there's tons to configure. Some options may impact gameplay, so use\n"
 			+ "with caution, and make sure you know what each option does before configuring.\n" + "\n"
-			+ "If you need help with the configuration or have any questions related to TacoSpigot,\n"
+			+ "If you need help with the configuration or have any questions related to DunkySpigot,\n"
 			+ "join us at the IRC.\n" + "\n" + "IRC: #taco @ irc.spi.gt ( http://irc.spi.gt/iris/?channels=taco )\n";
 	/* ======================================================================== */
 	static YamlConfiguration config;
@@ -32,7 +32,7 @@ public class TacoSpigotConfig {
 		CONFIG_FILE = configFile;
 		config = new YamlConfiguration();
 		try {
-			WindSpigot.LOGGER.info("Loading TacoSpigot config from " + configFile.getName());
+			WindSpigot.LOGGER.info("Loading DunkySpigot config from " + configFile.getName());
 			config.load(CONFIG_FILE);
 		} catch (IOException ignored) {
 		} catch (InvalidConfigurationException ex) {

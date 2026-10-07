@@ -19,7 +19,7 @@ public class WatchdogThread extends Thread {
 	private volatile boolean stopping;
 
 	private WatchdogThread(long timeoutTime, boolean restart) {
-		super("NachoSpigot Watchdog Thread");
+		super("DunkySpigot Watchdog Thread");
 		this.timeoutTime = timeoutTime;
 		this.restart = restart;
 	}

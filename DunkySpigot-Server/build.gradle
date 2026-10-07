@@ -44,29 +44,29 @@ dependencies {
 
 // Keep the updated dependency versions ahead of Minecraft's bundled libraries.
 def minecraftRuntimeJar = tasks.register('minecraftRuntimeJar', Jar) {
-    dependsOn tasks.named('compileJava'), project(':DunkySpigot-API').tasks.named('classes')
+    dependsOn tasks.named('classes'), project(':DunkySpigot-API').tasks.named('classes')
     archiveFileName.set('minecraft-runtime.jar')
     destinationDirectory.set(layout.buildDirectory.dir('minecraft'))
     from({ configurations.minecraftServer.collect { zipTree(it) } })
     // Minecraft also bundles older copies of the classes rebuilt by our modules.
-    def replacedClasses = providers.provider {
-        def outputs = sourceSets.main.output.classesDirs.files +
-                project(':DunkySpigot-API').sourceSets.main.output.classesDirs.files
+    def replacedEntries = providers.provider {
+        def outputs = sourceSets.main.output.files +
+                project(':DunkySpigot-API').sourceSets.main.output.files
         def names = new HashSet<String>()
         outputs.each { directory ->
-            fileTree(directory).matching { include '**/*.class' }.visit { entry ->
+            fileTree(directory).matching { include '**/*' }.visit { entry ->
                 if (!entry.directory) names.add(entry.relativePath.pathString)
             }
         }
         names
     }
-    inputs.files(sourceSets.main.output.classesDirs,
-            project(':DunkySpigot-API').sourceSets.main.output.classesDirs)
-    Set<String> replacedClassNames = null
-    doFirst { replacedClassNames = replacedClasses.get() }
+    inputs.files(sourceSets.main.output,
+            project(':DunkySpigot-API').sourceSets.main.output)
+    Set<String> replacedEntryNames = null
+    doFirst { replacedEntryNames = replacedEntries.get() }
     exclude { entry ->
-        if (replacedClassNames == null) replacedClassNames = replacedClasses.get()
-        replacedClassNames.contains(entry.path)
+        if (replacedEntryNames == null) replacedEntryNames = replacedEntries.get()
+        replacedEntryNames.contains(entry.path)
     }
     exclude 'org/apache/logging/log4j/**', 'io/netty/**', 'com/google/common/**',
             'com/google/gson/**', 'org/apache/commons/lang3/**'
@@ -125,3 +125,24 @@ test {
     doFirst { workingDir.mkdirs() }
     exclude 'org/bukkit/craftbukkit/inventory/ItemStack*Test.class'
 }
+
+// Catch resource collisions that otherwise hide server logs after startup.
+tasks.register('verifyRuntimeJar') {
+    dependsOn 'remapJar'
+    inputs.file(serverJar)
+    inputs.file('src/main/resources/log4j2.xml')
+    doLast {
+        new java.util.jar.JarFile(serverJar.get().asFile).withCloseable { jar ->
+            def entry = jar.getJarEntry('log4j2.xml')
+            if (entry == null) throw new GradleException('Runtime logging configuration missing')
+            def packaged = jar.getInputStream(entry).withCloseable { it.bytes }
+            if (!java.util.Arrays.equals(packaged, file('src/main/resources/log4j2.xml').bytes)) {
+                throw new GradleException('Minecraft replaced the server logging configuration')
+            }
+            if (jar.getJarEntry('net/minecraft/server/v1_8_R3/MinecraftServer.class') == null) {
+                throw new GradleException('Runtime NMS mapping is missing')
+            }
+        }
+    }
+}
+tasks.named('check') { dependsOn 'verifyRuntimeJar' }
