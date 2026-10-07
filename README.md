@@ -30,7 +30,7 @@ Os pacotes internos e métodos públicos do WindSpigot foram preservados para co
 
 Toda a lógica de atualização pertence ao DunkyUpdater. Nenhum hook de atualização foi acrescentado ao código deste servidor.
 
-O Updater deixa o core novo em `plugins/DunkyUpdater/runtime/DunkySpigot.jar`. No Linux, o Updater aplica a atualização por troca atômica durante o desligamento e preserva `DunkySpigot.jar.bak`. No Windows, os `start.bat` da rede aplicam o arquivo pendente antes da inicialização. Não é necessário mudar o comando de inicialização no Pterodactyl/Linux.
+O Updater deixa o core novo em `plugins/DunkyUpdater/runtime/DunkySpigot.jar`. No Linux, o Updater aplica a atualização por troca atômica durante o desligamento. No Windows, os `start.bat` da rede aplicam o arquivo pendente antes da inicialização. Não é necessário mudar o comando de inicialização no Pterodactyl/Linux.
 
 ## Créditos
 
