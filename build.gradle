@@ -1,0 +1,48 @@
+plugins {
+    id 'base'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+}
+
+allprojects {
+    group = 'net.dunky.spigot'
+    version = '1.0.0'
+    repositories {
+        mavenCentral()
+        maven { url = 'https://maven.elmakers.com/repository/' }
+        maven { url = 'https://repo.hpfxd.com/releases/' }
+        maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    }
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    java {
+        toolchain { languageVersion = JavaLanguageVersion.of(21) }
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+        withSourcesJar()
+    }
+    // Bukkit 1.8 uses MapMaker.softValues(), removed in newer Guava versions.
+    configurations.configureEach {
+        if (name != 'remapper') resolutionStrategy.force 'com.google.guava:guava:17.0'
+    }
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << '-Xlint:-options'
+    }
+    tasks.withType(AbstractArchiveTask).configureEach {
+        preserveFileTimestamps = false
+        reproducibleFileOrder = true
+    }
+    tasks.withType(Test).configureEach {
+        useJUnit()
+        jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
+    }
+}
+
+tasks.named('assemble') {
+    dependsOn ':DunkySpigot-API:assemble', ':DunkySpigot-Server:assemble'
+}
+tasks.named('check') {
+    dependsOn ':DunkySpigot-API:check', ':DunkySpigot-Server:check'
+}

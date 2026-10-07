@@ -23,3 +23,10 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 
+
+# Module build outputs
+**/target/
+**/dependency-reduced-pom.xml
+
+.gradle/
+**/build/
