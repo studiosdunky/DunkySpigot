@@ -44,7 +44,8 @@ ext.dunkySourceDirectories = [file('DunkySpigot-API/src/main'), file('DunkySpigo
 ext.dunkyTrackedFiles = [file('build.gradle'), file('settings.gradle'), file('DunkySpigot-API/build.gradle'), file('DunkySpigot-Server/build.gradle')]
 ext.dunkyArtifactTask = 'build'
 ext.dunkyArtifactFile = file('DunkySpigot-Server/build/libs/DunkySpigot.jar')
-apply from: '../DunkyUpdater/versionamento.gradle'
+def versioning = file('../DunkyUpdater/versionamento.gradle')
+apply from: versioning.isFile() ? versioning : file('gradle/versionamento.gradle')
 subprojects { version = rootProject.version }
 
 tasks.named('assemble') {
