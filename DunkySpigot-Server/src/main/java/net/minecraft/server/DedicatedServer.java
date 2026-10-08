@@ -22,7 +22,6 @@ import org.bukkit.event.server.RemoteServerCommandEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
 import com.windpvp.windspigot.WindSpigot;
-import com.windpvp.windspigot.commons.IPUtils;
 import com.windpvp.windspigot.config.WindSpigotConfig;
 import com.windpvp.windspigot.knockback.KnockbackConfig;
 
@@ -229,53 +228,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 			server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.STARTUP);
 			// Spigot End
 
-			if (!this.getOnlineMode()) {
-				DedicatedServer.LOGGER.warn("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
-				DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
-				// Spigot start
-				if (org.spigotmc.SpigotConfig.bungee) {
-					DedicatedServer.LOGGER.warn(
-							"Whilst this makes it possible to use BungeeCord, unless access to your server is properly restricted, it also opens up the ability for hackers to connect with any username they choose.");
-					DedicatedServer.LOGGER
-							.warn("Please see http://www.spigotmc.org/wiki/firewall-guide/ for further information.");
-					if (!WindSpigotConfig.stopNotifyBungee) {
-						DedicatedServer.LOGGER
-								.warn("---------------------------- DunkySpigot Checker ----------------------------");
-						DedicatedServer.LOGGER.warn(
-								"If you don't want to see this message anymore, set \"settings.stop-notify-bungee\" to \"true\" in \"dunkyspigot.yml\"!");
-						DedicatedServer.LOGGER.warn("Checking firewall..");
-						try {
-							String external = IPUtils.getExternalAddress();
-							int port = getServerPort();
-							if (IPUtils.isAccessible(external, port)) {
-								DedicatedServer.LOGGER.error("THIS SERVER IS ACCESSIBLE FROM THE OUTSIDE");
-								DedicatedServer.LOGGER
-										.error("WITHOUT HAVING A PROPER PLUGIN LIKE BUNGEEGUARD INSTALLED");
-								DedicatedServer.LOGGER
-										.error("EVERYONE WILL BE ABLE TO JOIN THIS SERVER IN OFFLINE MODE");
-								DedicatedServer.LOGGER
-										.error("PLEASE FIX YOUR FIREWALL OR INSTALL A PLUGIN LIKE BUNGEEGUARD");
-								DedicatedServer.LOGGER
-										.error("AND THEN DISABLE THIS NOTIFICATION IN THE CONFIGURATION FILE");
-							} else {
-								DedicatedServer.LOGGER.info(
-										"This instance does not seem to be accessible from the internet, good! Continuing..");
-							}
-						} catch (Exception e) {
-							DedicatedServer.LOGGER.error("Could not check firewall..");
-							e.printStackTrace();
-						}
-						DedicatedServer.LOGGER
-								.warn("---------------------------- DunkySpigot Checker ----------------------------");
-					}
-				} else {
-					DedicatedServer.LOGGER.warn(
-							"While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
-				}
-				// Spigot end
-				DedicatedServer.LOGGER
-						.warn("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
-			}
 
 			if (this.aR()) {
 				this.getUserCache().c();
