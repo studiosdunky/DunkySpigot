@@ -134,7 +134,6 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 		nbttagcompound2.set("Data", nbttagcompound1);
 
 		try {
-			java.nio.file.Files.createDirectories(this.baseDir.toPath());
 			File file = new File(this.baseDir, "level.dat_new");
 			File file1 = new File(this.baseDir, "level.dat_old");
 			File file2 = new File(this.baseDir, "level.dat");
@@ -167,7 +166,6 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
 		nbttagcompound1.set("Data", nbttagcompound);
 
 		try {
-			java.nio.file.Files.createDirectories(this.baseDir.toPath());
 			File file = new File(this.baseDir, "level.dat_new");
 			File file1 = new File(this.baseDir, "level.dat_old");
 			File file2 = new File(this.baseDir, "level.dat");
